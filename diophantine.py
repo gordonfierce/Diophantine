@@ -15,6 +15,7 @@ Diophantine is released under the MIT Licence (see Licence for details)
 
 Author: Thomas G. Close (tom.g.close@gmail.com)
 """
+
 # The MIT License (MIT)
 #
 # Copyright (c) 2015 Thomas G. Close
@@ -38,6 +39,7 @@ Author: Thomas G. Close (tom.g.close@gmail.com)
 # THE SOFTWARE.
 from copy import deepcopy
 from math import copysign, sqrt, log10, floor, gcd
+
 from sympy import Matrix, zeros, ones, eye
 from itertools import chain, product
 
@@ -52,8 +54,9 @@ def sign(x):
 
 
 def nonzero(m):
-    return [(i, j) for i, j in product(list(range(m.shape[0])), list(range(m.shape[1])))
-            if m[i, j] != 0]
+    return [
+        (i, j) for i, j in product(range(m.shape[0]), range(m.shape[1])) if m[i, j] != 0
+    ]
 
 
 def solve(A, b):
@@ -84,8 +87,10 @@ def solve(A, b):
     A = Matrix(A)
     b = Matrix(b)
     if b.shape != (A.shape[0], 1):
-        raise Exception("Length of b vector ({}) does not match number of rows"
-                        " in A matrix ({})".format(b.shape[0], A.shape[0]))
+        raise Exception(
+            "Length of b vector ({}) does not match number of rows"
+            " in A matrix ({})".format(b.shape[0], A.shape[0])
+        )
     G = zeros(A.shape[1] + 1, A.shape[0] + 1)
     G[:-1, :-1] = A.T
     G[-1, :-1] = b.reshape(1, b.shape[0])
@@ -122,8 +127,7 @@ def lllhermite(G, m1=1, n1=1):
     k = 1
     while k < m:
         col1, col2 = reduce_matrix(A, B, L, k, k - 1, D)
-        u = n1 * (int(D[k - 1]) * int(D[k + 1]) +
-                  int(L[k, k - 1]) * int(L[k, k - 1]))
+        u = n1 * (int(D[k - 1]) * int(D[k + 1]) + int(L[k, k - 1]) * int(L[k, k - 1]))
         v = m1 * int(D[k]) * int(D[k])
         if col1 <= min(col2, n - 1) or (col1 == n and col2 == n and u < v):
             swap_rows(k, A, B, L, D)
@@ -134,8 +138,7 @@ def lllhermite(G, m1=1, n1=1):
                 reduce_matrix(A, B, L, k, i, D)
             k = k + 1
     try:
-        rank = A.shape[0] - next(i for i in range(A.shape[0])
-                                 if nonzero(A[i, :]))
+        rank = A.shape[0] - next(i for i in range(A.shape[0]) if nonzero(A[i, :]))
     except StopIteration:
         assert False, "A matrix contains only zeros"
     hnf = A[::-1, :]
@@ -144,7 +147,7 @@ def lllhermite(G, m1=1, n1=1):
 
 
 def initialise_working_matrices(G):
-    """  G is a nonzero matrix with at least two rows.  """
+    """G is a nonzero matrix with at least two rows."""
     B = eye(G.shape[0])
     # Lower triang matrix
     L = zeros(G.shape[0], G.shape[0])
@@ -211,14 +214,14 @@ def swap_rows(k, A, B, L, D):
     # a reverse stop that ends past the negative of the length of the matrix
     reverse_stop = k - 2 if k > 1 else -(A.shape[0] + 1)
     # Swap rows of the matrices
-    A[(k - 1):(k + 1), :] = A[k:reverse_stop:-1, :]
-    B[(k - 1):(k + 1), :] = B[k:reverse_stop:-1, :]
-    L[(k - 1):(k + 1), :(k - 1)] = L[k:reverse_stop:-1, :(k - 1)]
-    t = (L[(k + 1):, k - 1] * D[k + 1] / D[k] -
-         L[(k + 1):, k] * L[k, k - 1] / D[k])
-    L[(k + 1):, k - 1] = (L[(k + 1):, k - 1] * L[k, k - 1] +
-                          L[(k + 1):, k] * D[k - 1]) / D[k]
-    L[(k + 1):, k] = t
+    A[(k - 1) : (k + 1), :] = A[k:reverse_stop:-1, :]
+    B[(k - 1) : (k + 1), :] = B[k:reverse_stop:-1, :]
+    L[(k - 1) : (k + 1), : (k - 1)] = L[k:reverse_stop:-1, : (k - 1)]
+    t = L[(k + 1) :, k - 1] * D[k + 1] / D[k] - L[(k + 1) :, k] * L[k, k - 1] / D[k]
+    L[(k + 1) :, k - 1] = (
+        L[(k + 1) :, k - 1] * L[k, k - 1] + L[(k + 1) :, k] * D[k - 1]
+    ) / D[k]
+    L[(k + 1) :, k] = t
     t = int(D[k - 1]) * int(D[k + 1]) + int(L[k, k - 1]) * int(L[k, k - 1])
     D[k] = t / D[k]
 
@@ -272,8 +275,7 @@ def get_solutions(A):
                     for j in range(i, m):
                         # Loops from back of xs
                         num, den = multr(Qn[i - 1, j], Qd[i - 1, j], x[j], 1)
-                        Un[i - 1], Ud[i - 1] = addr(Un[i - 1], Ud[i - 1], num,
-                                                    den)
+                        Un[i - 1], Ud[i - 1] = addr(Un[i - 1], Ud[i - 1], num, den)
                     # now update T
                     num, den = addr(x[i], 1, Un[i], Ud[i])
                     num, den = subr(num, den, Nn[i], Nd[i])
@@ -365,7 +367,7 @@ def lnearint(a, b):
 
 
 def ratior(a, b, c, d):
-    """ returns (a/b)/(c/d)"""
+    """returns (a/b)/(c/d)"""
     r = a * d
     s = b * c
     g = abs(gcd(r, s))
@@ -397,7 +399,7 @@ def addr(a, b, c, d):
 
 
 def comparer(a, b, c, d):
-    """Assumes b>0 and d>0.  Returns -1, 0 or 1 according as a/b <,=,> c/d+ """
+    """Assumes b>0 and d>0.  Returns -1, 0 or 1 according as a/b <,=,> c/d+"""
     assert b > 0 and d > 0
     return sign(a * d - b * c)
 
@@ -405,8 +407,8 @@ def comparer(a, b, c, d):
 def lcasvector(A, x):
     """lcv[j]=X[1]A[1, j]=...+X[m]A[m, j], 1 <= j <= n+"""
     # global lcv
-#     printnp(x)
-#     printnp(A)
+    #     printnp(x)
+    #     printnp(A)
     n = A.shape[1]
     lcv = zeros(n, 1)
     for j in range(n):
