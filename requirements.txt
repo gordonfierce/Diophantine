@@ -1,2 +1,5 @@
 sympy
 future
+ruff
+pytest
+pytest-cov
