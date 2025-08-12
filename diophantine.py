@@ -38,7 +38,7 @@ Author: Thomas G. Close (tom.g.close@gmail.com)
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 from copy import deepcopy
-from math import copysign, sqrt, log10, floor, gcd
+from math import copysign, sqrt, floor, gcd
 
 from sympy import Matrix, zeros, ones, eye
 from itertools import chain, product
