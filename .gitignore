@@ -6,3 +6,4 @@
 .buildpath
 *.egg-info
 /dist
+.coverage
