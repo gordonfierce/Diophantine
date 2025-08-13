@@ -1,4 +1,3 @@
-from builtins import zip
 from unittest import TestCase
 from diophantine import solve
 from sympy import Matrix
@@ -53,7 +52,7 @@ class TestDiophantine(TestCase):
             for A, nsol in zip(As, nsols):
                 sols = solve(A, b)
                 # Check number of solutions matches reference
-                self.assertEquals(len(sols), nsol,
+                self.assertEqual(len(sols), nsol,
                                   "Incorrect number of solutions found ({}), "
                                    "expected {}".format(len(sols), nsol))
                 for sol in sols:
@@ -144,7 +143,7 @@ class TestDiophantine(TestCase):
                 self.assertEqual(len(xs), nsols[count],
                                  "Incorrect number of solutions")
                 for x in xs:
-                    self.assertEquals(A * x, b, "A * x doesn't match b")
+                    self.assertEqual(A * x, b, "A * x doesn't match b")
                 count += 1
 
 

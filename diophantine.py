@@ -36,15 +36,8 @@ Author: Thomas G. Close (tom.g.close@gmail.com)
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-from builtins import zip
-from builtins import next
-from builtins import range
 from copy import deepcopy
-from math import copysign, sqrt, log10, floor
-try:
-    from math import gcd  # Py >= 3.6
-except ImportError:
-    from fractions import gcd  # Py < 3.6
+from math import copysign, sqrt, log10, floor, gcd
 from sympy import Matrix, zeros, ones, eye
 from itertools import chain, product
 
@@ -59,7 +52,7 @@ def sign(x):
 
 
 def nonzero(m):
-    return [(i, j) for i, j in product(range(m.shape[0]), range(m.shape[1]))
+    return [(i, j) for i, j in product(list(range(m.shape[0])), list(range(m.shape[1])))
             if m[i, j] != 0]
 
 
@@ -137,7 +130,7 @@ def lllhermite(G, m1=1, n1=1):
             if k > 1:
                 k = k - 1
         else:
-            for i in reversed(range(k - 1)):
+            for i in reversed(list(range(k - 1))):
                 reduce_matrix(A, B, L, k, i, D)
             k = k + 1
     try:
