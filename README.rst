@@ -1,13 +1,6 @@
 Diophantine
 ===========
 
-.. image:: https://travis-ci.org/tclose/Diophantine.svg?branch=master
-   :target: https://travis-ci.org/tclose/Diophantine
-   :alt: Unit Test Status
-.. image:: https://coveralls.io/repos/github/tclose/Diophantine/badge.svg?branch=master
-   :target: https://coveralls.io/github/tclose/Diophantine?branch=master
-   :alt: Unit Test Coverage
-
 Author: Thomas G. Close (tom.g.close@gmail.com)
 
 Diophantine (http://github.com/tclose/Diophantine) is a Python package for
